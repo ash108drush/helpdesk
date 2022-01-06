@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-8">
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col"> # </th>
+        <th scope="col"> Создан: </th>
+        <th scope="col">Сообщение:  </th>
+        <th scope="col"> Адрес: </th>
+        <th scope="col"> Статус: </th>
+
+        <th scope="col"> Испольнитель: </th>
+        <th scope="col"> Закрыт: </th>
+    </tr>
+    </thead>
+    <tbody>
+{% for ticket in tickets %}
+    <tr>
+        <td>{{ ticket.id }}</td>
+    <td>   {{ ticket.opendateStr }}</td>
+    <td>{{ ticket.messagelim }}</td>
+    <td>{{ ticket.address.address }}</td>
+    <td>{{ ticket.staus.name }}</td>
+
+    <td>{{ ticket.worker.name ?? "N\A"  }}</td>
+    <td>{{ ticket.closedateStr ??  "N\A" }}</td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+    </div>
+</div>

@@ -93,6 +93,11 @@ class Tickets
         return $this->message;
     }
 
+    public function getMessagelim(): ?string
+    {
+        return strip_tags(substr($this->message, 0, 50));
+    }
+
     public function setMessage(string $message): self
     {
         $this->message = $message;
@@ -103,6 +108,12 @@ class Tickets
     public function getAddress(): ?Address
     {
         return $this->address;
+    }
+
+    public function getAddressbyid($id): string
+    {
+
+        return $this->address->find($id);
     }
 
     public function setAddress(?Address $address): self
@@ -116,6 +127,12 @@ class Tickets
     {
         return $this->opendate;
     }
+    public function getOpendateStr(): ?string
+    {
+
+
+        return date_format($this->opendate, 'd/m/y H:i:s');
+    }
 
     public function setOpendate(\DateTimeImmutable $opendate): self
     {
@@ -127,6 +144,14 @@ class Tickets
     public function getClosedate(): ?\DateTimeImmutable
     {
         return $this->closedate;
+    }
+    public function getClosedateStr(): ?string
+    {
+        if($this->closedate != null) {
+            return date_format($this->closedate, 'd/m/y H:i:s');
+        }else{
+            return null;
+        }
     }
 
     public function setClosedate(?\DateTimeImmutable $closedate): self

@@ -47,4 +47,43 @@ class AddressRepository extends ServiceEntityRepository
         ;
     }
     */
+	
+	    public function findnameByid($id):?string
+    {
+
+            $a=$this->createQueryBuilder('u')
+            ->select('u.address')
+            ->Where('u.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getResult();
+            if(is_array($a)){
+                return $a[0]['address'];
+            }else{
+                return "Unknown";
+            }
+
+
+    }
+
+    public function GetnameChoice()
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT address,id FROM address  ORDER BY id ASC';
+
+        $a=$conn->executeQuery($sql)->fetchAllKeyValue();
+
+        /*
+        $a=$this->createQueryBuilder('u')
+            ->select('u.address,u.id')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+*/
+            return $a;
+
+
+
+    }
 }

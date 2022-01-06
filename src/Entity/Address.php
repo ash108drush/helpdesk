@@ -22,6 +22,7 @@ class Address
      */
     private $address;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,7 +32,14 @@ class Address
     {
         return $this->address;
     }
+/*
+    public function getAddressbyId($id): ?string
+    {
 
+        $em = $this->getManager();
+        return $this->findnameByid($id);
+    }
+*/
     public function setAddress(string $address): self
     {
         $this->address = $address;
