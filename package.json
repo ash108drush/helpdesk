@@ -17,6 +17,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "systeminformation": "^5.9.18",
         "yarn": "^1.22.17"
     }
 }

@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Tickets;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+
 
 /**
  * @method Tickets|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +16,24 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TicketsRepository extends ServiceEntityRepository
 {
+
+    public const PAGINATOR_PER_PAGE = 10;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tickets::class);
+    }
+
+    public function getTicketsPaginator( int $offset): Paginator
+    {
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.opendate', 'DESC')
+            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setFirstResult($offset)
+            ->getQuery();
+
+
+        return new Paginator($query,false);
     }
 
     // /**

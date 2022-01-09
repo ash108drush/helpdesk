@@ -1,0 +1,19 @@
+<div class="row ">
+    <div class="col-md-5">
+        {% if previous >= 0 %}
+            	<a href="{{ path('homepage', {offset: previous }) }}"> <<<- Назад</a>
+            	{% endif %}
+        {% if perpage <= tickets|length %}
+            {% for i in range(0,  tickets|length,perpage) %}
+                <a href="{{ path('homepage', { offset: i  })  }}"> {{ i}}</a>
+
+            {% endfor %}
+        {% endif %}
+        	{% if next < tickets|length %}
+            	<a href="{{ path('homepage', { offset: next })  }}"> Вперед ->>></a>
+            	{% endif %}
+
+
+    </div>
+</div>
+

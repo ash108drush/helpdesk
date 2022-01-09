@@ -6,6 +6,7 @@ use App\Entity\Ticketstatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @method Ticketstatus|null find($id, $lockMode = null, $lockVersion = null)
  * @method Ticketstatus|null findOneBy(array $criteria, array $orderBy = null)
@@ -14,12 +15,19 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TicketstatusRepository extends ServiceEntityRepository
 {
+
+
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ticketstatus::class);
     }
 
-    // /**
+
+
+
+// /**
     //  * @return Ticketstatus[] Returns an array of Ticketstatus objects
     //  */
     /*

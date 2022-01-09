@@ -12,23 +12,37 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\TicketType;
 use App\Entity\Tickets;
 use Monolog\DateTimeImmutable;
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 
 class HelpdeskController extends AbstractController
 {
     /**
-     * @Route("/{offset}", name="homepage")
+     * @Route("/", name="homepage")
      */
-    public function index(Request $request,EntityManagerInterface $entityManager,int $offset=0): Response
+    public function index(Request $request,EntityManagerInterface $entityManager): Response
     {
         $ticket = new Tickets();
+        $offset=0;
+        $pages=0;
+        $action="";
+        if($request->query->get('offset') != null){
+            $offset=intval($request->query->get('offset'));
+        }
+        if($request->query->get('action') != null){
+            $action=$request->query->get('action');
+        }
         $choices=$entityManager->getRepository(Address::class)->GetnameChoice() ;
         $form = $this->createForm(TicketType::class, $ticket,['address_choice'=>$choices]);
         $form->handleRequest($request);
-        $limit = 20;
-        $tickets=$entityManager->getRepository(Tickets::class)->findBy([],['opendate'=>'ASC'],$limit,$offset);
+        $limit = 10;
+        //$tickets=$entityManager->getRepository(Tickets::class)->findBy([],['opendate'=>'DESC'],$limit,$offset);
+        $TicketsRepository=$entityManager->getRepository(Tickets::class);
+        $tickets=$TicketsRepository->getTicketsPaginator($offset);
+
+        //dump($this->generateUrl('homepage',array('slug' => 'ticketdone')));
         if ($form->isSubmitted() && $form->isValid() ) {
              //$form->getData();//holds the submitted values
             // but, the original `$task` variable has also been updated
@@ -50,18 +64,25 @@ class HelpdeskController extends AbstractController
             $entityManager->flush();
             //return new Response('Saved new product with id '.$product->getId());
 
-           // return $this->redirectToRoute('task_success');
+            return $this->redirectToRoute('homepage',["action"=>"ticketdone"]);
            // return $this->render('helpdesk/index.html.twig', [
            //     'controller_name' => 'Answer',
             //   'form' => $form->createView(),
           // ]);
 
         }
-        //dump($tickets);
+        dump($tickets);
         return $this->render('helpdesk/index.html.twig', [
                 'controller_name' => 'HelpdeskController',
                 'form' => $form->createView(),
                 'tickets' =>$tickets,
+                'action'=>$action,
+                'pages'=>$pages,
+                'perpage' => $TicketsRepository::PAGINATOR_PER_PAGE,
+                'previous' => $offset - $TicketsRepository::PAGINATOR_PER_PAGE,
+            	'next' => min(count($tickets), $offset + $TicketsRepository::PAGINATOR_PER_PAGE),
+
+
             ]);
 
 

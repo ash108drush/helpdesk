@@ -7,9 +7,18 @@
 
 <div class="container">
 <div class=" example-wrapper ">
-
+    {% if action == "" %}
     {{ include('helpdesk/createticketform.twig') }}
-
+    {% endif  %}
+    {% if action == "ticketdone" %}
+    <div class="row justify-content-center">
+    <div class="col-md-5">
+        <p class="h3">Заявка успешно создана </p>
+        <br>
+        <a href="{{ path("homepage") }}"><button type="button" class="btn btn-primary">назад на главную</button></a>
+    </div>
+    </div>
+    {% endif  %}
 
 </div>
 <div class="ticketstable-wrapper">
@@ -17,6 +26,9 @@
 
 </div>
 
+    <div class="pagination-wrapper">
+        {{ include('helpdesk/pagination.twig') }}
 
-</div>>
+    </div>
+</div>
 {% endblock %}
